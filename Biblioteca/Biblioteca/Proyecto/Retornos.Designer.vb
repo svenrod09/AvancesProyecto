@@ -33,6 +33,9 @@ Partial Class Retornos
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtMulta = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnBuscar = New System.Windows.Forms.Button()
+        Me.btnEditar = New System.Windows.Forms.Button()
+        Me.btnIngresar = New System.Windows.Forms.Button()
         Me.btnLimpiar = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
@@ -46,9 +49,6 @@ Partial Class Retornos
         Me.txtIdRetorno = New System.Windows.Forms.TextBox()
         Me.toolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.errorValidacion = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.btnBuscar = New System.Windows.Forms.Button()
-        Me.btnEditar = New System.Windows.Forms.Button()
-        Me.btnIngresar = New System.Windows.Forms.Button()
         Me.GroupBox2.SuspendLayout()
         CType(Me.DGRetornos, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DGlibros, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -171,6 +171,39 @@ Partial Class Retornos
         Me.Label2.TabIndex = 44
         Me.Label2.Text = "MULTA"
         '
+        'btnBuscar
+        '
+        Me.btnBuscar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
+        Me.btnBuscar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
+        Me.btnBuscar.Image = Global.Biblioteca.My.Resources.Resources.seo_social_web_network_internet_340_icon_icons_com_61497
+        Me.btnBuscar.Location = New System.Drawing.Point(272, 137)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Size = New System.Drawing.Size(45, 45)
+        Me.btnBuscar.TabIndex = 43
+        Me.btnBuscar.UseVisualStyleBackColor = True
+        '
+        'btnEditar
+        '
+        Me.btnEditar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
+        Me.btnEditar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
+        Me.btnEditar.Image = Global.Biblioteca.My.Resources.Resources.pencil_striped_symbol_for_interface_edit_buttons_icon_icons_com_56782
+        Me.btnEditar.Location = New System.Drawing.Point(272, 86)
+        Me.btnEditar.Name = "btnEditar"
+        Me.btnEditar.Size = New System.Drawing.Size(45, 45)
+        Me.btnEditar.TabIndex = 42
+        Me.btnEditar.UseVisualStyleBackColor = True
+        '
+        'btnIngresar
+        '
+        Me.btnIngresar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
+        Me.btnIngresar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
+        Me.btnIngresar.Image = Global.Biblioteca.My.Resources.Resources.saveas_5165
+        Me.btnIngresar.Location = New System.Drawing.Point(272, 35)
+        Me.btnIngresar.Name = "btnIngresar"
+        Me.btnIngresar.Size = New System.Drawing.Size(45, 45)
+        Me.btnIngresar.TabIndex = 41
+        Me.btnIngresar.UseVisualStyleBackColor = True
+        '
         'btnLimpiar
         '
         Me.btnLimpiar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
@@ -274,39 +307,6 @@ Partial Class Retornos
         'errorValidacion
         '
         Me.errorValidacion.ContainerControl = Me
-        '
-        'btnBuscar
-        '
-        Me.btnBuscar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
-        Me.btnBuscar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
-        Me.btnBuscar.Image = Global.Biblioteca.My.Resources.Resources.seo_social_web_network_internet_340_icon_icons_com_61497
-        Me.btnBuscar.Location = New System.Drawing.Point(272, 137)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(45, 45)
-        Me.btnBuscar.TabIndex = 43
-        Me.btnBuscar.UseVisualStyleBackColor = True
-        '
-        'btnEditar
-        '
-        Me.btnEditar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
-        Me.btnEditar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
-        Me.btnEditar.Image = Global.Biblioteca.My.Resources.Resources.pencil_striped_symbol_for_interface_edit_buttons_icon_icons_com_56782
-        Me.btnEditar.Location = New System.Drawing.Point(272, 86)
-        Me.btnEditar.Name = "btnEditar"
-        Me.btnEditar.Size = New System.Drawing.Size(45, 45)
-        Me.btnEditar.TabIndex = 42
-        Me.btnEditar.UseVisualStyleBackColor = True
-        '
-        'btnIngresar
-        '
-        Me.btnIngresar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
-        Me.btnIngresar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
-        Me.btnIngresar.Image = Global.Biblioteca.My.Resources.Resources.saveas_5165
-        Me.btnIngresar.Location = New System.Drawing.Point(272, 35)
-        Me.btnIngresar.Name = "btnIngresar"
-        Me.btnIngresar.Size = New System.Drawing.Size(45, 45)
-        Me.btnIngresar.TabIndex = 41
-        Me.btnIngresar.UseVisualStyleBackColor = True
         '
         'Retornos
         '

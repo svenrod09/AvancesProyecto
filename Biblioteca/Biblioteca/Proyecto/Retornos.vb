@@ -5,6 +5,7 @@ Public Class Retornos
         mostrarDataGridPrestamos()
         mostrarPrestamos()
         obtenerFecha()
+        controlCmbEstado()
     End Sub
     Private Sub mostrarPrestamos()
         mostrarDataGridPrestamos()
@@ -34,7 +35,7 @@ Public Class Retornos
         prestamoid = txtIdPrestamo.Text
         fechaRetorno = txtFechaRetorno.Text
         multa = txtMulta.Text
-        estadoMulta = cmbEstadoMulta.Text
+        estadoMulta = asignarEstado()
         Try
             If cn.insertarRetornos(idretorno, alumnoid, libroid, prestamoid, fechaRetorno, multa, estadoMulta) Then
                 MessageBox.Show("Se guardó el registro de retorno", "Datos Ingresados", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -104,6 +105,7 @@ Public Class Retornos
             txtIdLibro.Text = dgdatos.Cells(2).Value.ToString
             fechaVence = dgdatos.Cells(4).Value.ToString
             calcularMulta(fechaVence)
+            controlCmbEstado()
         Catch ex As Exception
         End Try
     End Sub
@@ -112,6 +114,22 @@ Public Class Retornos
             txtMulta.Text = 100.0
         Else
             txtMulta.Text = 0
+        End If
+    End Sub
+    Private Function asignarEstado()
+        Dim estado As String
+        If (Val(txtMulta.Text) > 0) Then
+            estado = cmbEstadoMulta.Text
+        Else
+            estado = "Ninguno"
+        End If
+        Return estado
+    End Function
+    Private Sub controlCmbEstado()
+        If Val(txtMulta.Text) = 0 Then
+            cmbEstadoMulta.Enabled = False
+        Else
+            cmbEstadoMulta.Enabled = True
         End If
     End Sub
     Private Function validarCampos()
