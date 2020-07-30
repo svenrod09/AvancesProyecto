@@ -4,6 +4,7 @@ Public Class Retornos
     Private Sub Retornos_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         mostrarDataGridPrestamos()
         mostrarPrestamos()
+        bloquearModificar()
         obtenerFecha()
         controlCmbEstado()
     End Sub
@@ -49,7 +50,7 @@ Public Class Retornos
     Private Sub buscarRetorno()
         Dim cn As New conexion
         Dim idretorno As Integer
-        idretorno = txtIdRetorno.Text
+        idretorno = txtBuscar.Text
         Try
             If cn.buscarRetornos(idretorno) Then
                 MsgBox("Encontrado")
@@ -68,10 +69,12 @@ Public Class Retornos
         Try
             cn.conexion.Open()
             cmd.CommandType = CommandType.StoredProcedure
-            cmd.Parameters.AddWithValue("@idretorno", txtIdRetorno.Text)
+            cmd.Parameters.AddWithValue("@idretorno", txtBuscar.Text)
             da.Fill(dt)
             If dt.Rows.Count <> 0 Then
+                mostrarDataGridRetornos()
                 DGRetornos.DataSource = dt
+                activarModificar()
                 cn.conexion.Close()
             Else
                 DGRetornos.DataSource = Nothing
@@ -102,18 +105,24 @@ Public Class Retornos
             Dim dgdatos As DataGridViewRow = DGlibros.Rows(e.RowIndex)
             txtIdPrestamo.Text = dgdatos.Cells(0).Value.ToString
             txtIdAlumno.Text = dgdatos.Cells(1).Value.ToString
-            txtIdLibro.Text = dgdatos.Cells(2).Value.ToString
-            fechaVence = dgdatos.Cells(4).Value.ToString
+            txtIdLibro.Text = dgdatos.Cells(3).Value.ToString
+            fechaVence = dgdatos.Cells(6).Value.ToString
             calcularMulta(fechaVence)
             controlCmbEstado()
         Catch ex As Exception
         End Try
     End Sub
     Private Sub calcularMulta(fechaVence As Date)
-        If (Date.Compare(fechaVence, txtFechaRetorno.Text) < 0) Then
-            txtMulta.Text = 100.0
+        Dim fechaRetorno As Date
+        Dim multa As Double
+        fechaRetorno = txtFechaRetorno.Text
+        If (Date.Compare(fechaVence, fechaRetorno) < 0) Then
+            Dim dias As Long = DateDiff(DateInterval.Day, fechaVence, fechaRetorno)
+            multa = 50 * dias
+            txtMulta.Text = multa
         Else
-            txtMulta.Text = 0
+            multa = 0
+            txtMulta.Text = multa
         End If
     End Sub
     Private Function asignarEstado()
@@ -155,12 +164,21 @@ Public Class Retornos
         DGRetornos.Enabled = True
         DGRetornos.Visible = True
     End Sub
+    Private Sub activarModificar()
+        btnEditar.Enabled = True
+    End Sub
+    Private Sub bloquearModificar()
+        btnEditar.Enabled = False
+    End Sub
     Private Sub limpiar()
         txtIdRetorno.Clear()
         txtIdAlumno.Clear()
         txtIdPrestamo.Clear()
         txtIdLibro.Clear()
+        txtFechaRetorno.Clear()
         txtMulta.Clear()
+        obtenerFecha()
+        bloquearModificar()
     End Sub
 
     Private Sub btnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
@@ -177,6 +195,7 @@ Public Class Retornos
         If validarCampos() = True Then
             insertarRetorno()
             mostrarRetornos()
+            limpiar()
         Else
             MessageBox.Show("No se pudo guardar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
@@ -184,8 +203,8 @@ Public Class Retornos
 
     Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
         buscarRetorno()
+        activarModificar()
     End Sub
-
     Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
         editarRetorno()
     End Sub
@@ -214,6 +233,11 @@ Public Class Retornos
         toolTip.ToolTipTitle = "Fecha Retorno"
         toolTip.ToolTipIcon = ToolTipIcon.Info
     End Sub
+    Private Sub txtBuscar_MouseHover(sender As Object, e As EventArgs) Handles txtBuscar.MouseHover
+        toolTip.SetToolTip(txtBuscar, "Inserte el ID del Retorno que desea buscar")
+        toolTip.ToolTipTitle = "Buscar"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
     Private Sub txtMulta_MouseHover(sender As Object, e As EventArgs) Handles txtMulta.MouseHover
         toolTip.SetToolTip(txtMulta, "Calcula automáticamente el valor de  la multa")
         toolTip.ToolTipTitle = "Multa"
@@ -222,6 +246,39 @@ Public Class Retornos
     Private Sub cmbEstadoMulta_MouseHover(sender As Object, e As EventArgs) Handles cmbEstadoMulta.MouseHover
         toolTip.SetToolTip(cmbEstadoMulta, "Seleccione si la multa está pagada o no")
         toolTip.ToolTipTitle = "Estado Multa"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
+    Private Sub btnIngresar_MouseHover(sender As Object, e As EventArgs) Handles btnIngresar.MouseHover
+        toolTip.SetToolTip(btnIngresar, "Ingresa un registro en la tabla Retornos")
+        toolTip.ToolTipTitle = "Ingresar"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
+
+    Private Sub btnEditar_MouseHover(sender As Object, e As EventArgs) Handles btnEditar.MouseHover
+        toolTip.SetToolTip(btnEditar, "Modifica un registro de la tabla Retornos")
+        toolTip.ToolTipTitle = "Modificar"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
+
+    Private Sub btnBuscar_MouseHover(sender As Object, e As EventArgs) Handles btnBuscar.MouseHover
+        toolTip.SetToolTip(btnBuscar, "Busca un registro en la tabla Retornos")
+        toolTip.ToolTipTitle = "Buscar"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
+
+    Private Sub btnLimpiar_MouseHover(sender As Object, e As EventArgs) Handles btnLimpiar.MouseHover
+        toolTip.SetToolTip(btnLimpiar, "Limpia las cajas de texto")
+        toolTip.ToolTipTitle = "Limpiar"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
+    Private Sub btnPrestamos_MouseHover(sender As Object, e As EventArgs) Handles btnPrestamos.MouseHover
+        toolTip.SetToolTip(btnPrestamos, "Muestra la tabla de Préstamos")
+        toolTip.ToolTipTitle = "Préstamos"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
+    Private Sub btnRetornos_MouseHover(sender As Object, e As EventArgs) Handles btnRetornos.MouseHover
+        toolTip.SetToolTip(btnRetornos, "Muestra la tabla de Retornos")
+        toolTip.ToolTipTitle = "Retornos"
         toolTip.ToolTipIcon = ToolTipIcon.Info
     End Sub
     Private Sub txtIdRetorno_Validating(sender As Object, e As CancelEventArgs) Handles txtIdRetorno.Validating
@@ -264,6 +321,13 @@ Public Class Retornos
             Me.errorValidacion.SetError(sender, "")
         Else
             Me.errorValidacion.SetError(sender, "No pueden dejar campos vacíos")
+        End If
+    End Sub
+    Private Sub txtBuscar_Validating(sender As Object, e As CancelEventArgs) Handles txtBuscar.Validating
+        If DirectCast(sender, TextBox).Text.Length > 0 And IsNumeric(txtBuscar.Text) Then
+            Me.errorValidacion.SetError(sender, "")
+        Else
+            Me.errorValidacion.SetError(sender, "No puede ingresar datos que no sean números")
         End If
     End Sub
 End Class

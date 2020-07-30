@@ -24,16 +24,18 @@ Partial Class Retornos
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtBuscar = New System.Windows.Forms.TextBox()
         Me.DGRetornos = New System.Windows.Forms.DataGridView()
         Me.btnRetornos = New System.Windows.Forms.Button()
         Me.btnPrestamos = New System.Windows.Forms.Button()
         Me.DGlibros = New System.Windows.Forms.DataGridView()
+        Me.btnBuscar = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.cmbEstadoMulta = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtMulta = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.btnBuscar = New System.Windows.Forms.Button()
         Me.btnEditar = New System.Windows.Forms.Button()
         Me.btnIngresar = New System.Windows.Forms.Button()
         Me.btnLimpiar = New System.Windows.Forms.Button()
@@ -59,10 +61,13 @@ Partial Class Retornos
         'GroupBox2
         '
         Me.GroupBox2.BackColor = System.Drawing.SystemColors.InactiveBorder
+        Me.GroupBox2.Controls.Add(Me.Label4)
+        Me.GroupBox2.Controls.Add(Me.txtBuscar)
         Me.GroupBox2.Controls.Add(Me.DGRetornos)
         Me.GroupBox2.Controls.Add(Me.btnRetornos)
         Me.GroupBox2.Controls.Add(Me.btnPrestamos)
         Me.GroupBox2.Controls.Add(Me.DGlibros)
+        Me.GroupBox2.Controls.Add(Me.btnBuscar)
         Me.GroupBox2.Location = New System.Drawing.Point(341, 13)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(848, 367)
@@ -70,12 +75,28 @@ Partial Class Retornos
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Datos"
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(23, 26)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(79, 23)
+        Me.Label4.TabIndex = 45
+        Me.Label4.Text = "ID RETORNO"
+        '
+        'txtBuscar
+        '
+        Me.txtBuscar.Location = New System.Drawing.Point(108, 23)
+        Me.txtBuscar.Name = "txtBuscar"
+        Me.txtBuscar.Size = New System.Drawing.Size(100, 30)
+        Me.txtBuscar.TabIndex = 44
+        '
         'DGRetornos
         '
         Me.DGRetornos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DGRetornos.Location = New System.Drawing.Point(6, 56)
+        Me.DGRetornos.Location = New System.Drawing.Point(6, 63)
         Me.DGRetornos.Name = "DGRetornos"
-        Me.DGRetornos.Size = New System.Drawing.Size(825, 305)
+        Me.DGRetornos.Size = New System.Drawing.Size(825, 298)
         Me.DGRetornos.TabIndex = 3
         '
         'btnRetornos
@@ -99,10 +120,21 @@ Partial Class Retornos
         'DGlibros
         '
         Me.DGlibros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DGlibros.Location = New System.Drawing.Point(6, 56)
+        Me.DGlibros.Location = New System.Drawing.Point(6, 63)
         Me.DGlibros.Name = "DGlibros"
-        Me.DGlibros.Size = New System.Drawing.Size(825, 305)
+        Me.DGlibros.Size = New System.Drawing.Size(825, 298)
         Me.DGlibros.TabIndex = 0
+        '
+        'btnBuscar
+        '
+        Me.btnBuscar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
+        Me.btnBuscar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
+        Me.btnBuscar.Image = Global.Biblioteca.My.Resources.Resources.seo_social_web_network_internet_340_icon_icons_com_61497
+        Me.btnBuscar.Location = New System.Drawing.Point(233, 15)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Size = New System.Drawing.Size(45, 45)
+        Me.btnBuscar.TabIndex = 43
+        Me.btnBuscar.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -111,7 +143,6 @@ Partial Class Retornos
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.txtMulta)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.btnBuscar)
         Me.GroupBox1.Controls.Add(Me.btnEditar)
         Me.GroupBox1.Controls.Add(Me.btnIngresar)
         Me.GroupBox1.Controls.Add(Me.btnLimpiar)
@@ -171,23 +202,12 @@ Partial Class Retornos
         Me.Label2.TabIndex = 44
         Me.Label2.Text = "MULTA"
         '
-        'btnBuscar
-        '
-        Me.btnBuscar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
-        Me.btnBuscar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
-        Me.btnBuscar.Image = Global.Biblioteca.My.Resources.Resources.seo_social_web_network_internet_340_icon_icons_com_61497
-        Me.btnBuscar.Location = New System.Drawing.Point(272, 137)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(45, 45)
-        Me.btnBuscar.TabIndex = 43
-        Me.btnBuscar.UseVisualStyleBackColor = True
-        '
         'btnEditar
         '
         Me.btnEditar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
         Me.btnEditar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
         Me.btnEditar.Image = Global.Biblioteca.My.Resources.Resources.pencil_striped_symbol_for_interface_edit_buttons_icon_icons_com_56782
-        Me.btnEditar.Location = New System.Drawing.Point(272, 86)
+        Me.btnEditar.Location = New System.Drawing.Point(272, 115)
         Me.btnEditar.Name = "btnEditar"
         Me.btnEditar.Size = New System.Drawing.Size(45, 45)
         Me.btnEditar.TabIndex = 42
@@ -321,6 +341,7 @@ Partial Class Retornos
         Me.Name = "Retornos"
         Me.Text = "Retornos"
         Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         CType(Me.DGRetornos, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DGlibros, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
@@ -356,4 +377,6 @@ Partial Class Retornos
     Friend WithEvents btnRetornos As Button
     Friend WithEvents btnPrestamos As Button
     Friend WithEvents errorValidacion As ErrorProvider
+    Friend WithEvents Label4 As Label
+    Friend WithEvents txtBuscar As TextBox
 End Class
