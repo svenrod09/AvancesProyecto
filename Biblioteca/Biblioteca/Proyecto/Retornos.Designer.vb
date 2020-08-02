@@ -32,6 +32,7 @@ Partial Class Retornos
         Me.DGlibros = New System.Windows.Forms.DataGridView()
         Me.btnBuscar = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnFactura = New System.Windows.Forms.Button()
         Me.cmbEstadoMulta = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtMulta = New System.Windows.Forms.TextBox()
@@ -139,6 +140,7 @@ Partial Class Retornos
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.SystemColors.InactiveBorder
+        Me.GroupBox1.Controls.Add(Me.btnFactura)
         Me.GroupBox1.Controls.Add(Me.cmbEstadoMulta)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.txtMulta)
@@ -164,6 +166,17 @@ Partial Class Retornos
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Retornos"
+        '
+        'btnFactura
+        '
+        Me.btnFactura.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
+        Me.btnFactura.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
+        Me.btnFactura.Image = Global.Biblioteca.My.Resources.Resources.ic_ad_97607
+        Me.btnFactura.Location = New System.Drawing.Point(272, 188)
+        Me.btnFactura.Name = "btnFactura"
+        Me.btnFactura.Size = New System.Drawing.Size(45, 45)
+        Me.btnFactura.TabIndex = 48
+        Me.btnFactura.UseVisualStyleBackColor = True
         '
         'cmbEstadoMulta
         '
@@ -207,7 +220,7 @@ Partial Class Retornos
         Me.btnEditar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
         Me.btnEditar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
         Me.btnEditar.Image = Global.Biblioteca.My.Resources.Resources.pencil_striped_symbol_for_interface_edit_buttons_icon_icons_com_56782
-        Me.btnEditar.Location = New System.Drawing.Point(272, 115)
+        Me.btnEditar.Location = New System.Drawing.Point(272, 86)
         Me.btnEditar.Name = "btnEditar"
         Me.btnEditar.Size = New System.Drawing.Size(45, 45)
         Me.btnEditar.TabIndex = 42
@@ -229,7 +242,7 @@ Partial Class Retornos
         Me.btnLimpiar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray
         Me.btnLimpiar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray
         Me.btnLimpiar.Image = Global.Biblioteca.My.Resources.Resources.eraser_120031
-        Me.btnLimpiar.Location = New System.Drawing.Point(272, 188)
+        Me.btnLimpiar.Location = New System.Drawing.Point(272, 137)
         Me.btnLimpiar.Name = "btnLimpiar"
         Me.btnLimpiar.Size = New System.Drawing.Size(45, 45)
         Me.btnLimpiar.TabIndex = 40
@@ -379,4 +392,5 @@ Partial Class Retornos
     Friend WithEvents errorValidacion As ErrorProvider
     Friend WithEvents Label4 As Label
     Friend WithEvents txtBuscar As TextBox
+    Friend WithEvents btnFactura As Button
 End Class

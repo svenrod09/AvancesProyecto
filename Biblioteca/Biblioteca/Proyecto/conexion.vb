@@ -95,4 +95,44 @@ Public Class conexion
             conexion.Close()
         End Try
     End Function
+    Public Function insertarFactura(idretorno As Integer, alumnoid As String, montoFactura As Double, fecha As Date)
+        Try
+            conexion.Open()
+            cmd = New SqlCommand("insertarFactura", conexion)
+            cmd.CommandType = CommandType.StoredProcedure
+            cmd.Parameters.AddWithValue("@idretorno", idretorno)
+            cmd.Parameters.AddWithValue("@alumnoid", alumnoid)
+            cmd.Parameters.AddWithValue("@montoFactura", montoFactura)
+            cmd.Parameters.AddWithValue("@fecha", fecha)
+            If cmd.ExecuteNonQuery <> 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            Return False
+        Finally
+            conexion.Close()
+        End Try
+    End Function
+    Public Function insertarFacturaEditar(idretorno As Integer, fecha As Date)
+        Try
+            conexion.Open()
+            cmd = New SqlCommand("insertarFacturaEditar", conexion)
+            cmd.CommandType = CommandType.StoredProcedure
+            cmd.Parameters.AddWithValue("@idretorno", idretorno)
+            cmd.Parameters.AddWithValue("@fecha", fecha)
+            If cmd.ExecuteNonQuery <> 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            Return False
+        Finally
+            conexion.Close()
+        End Try
+    End Function
 End Class

@@ -5,6 +5,7 @@ Public Class Retornos
         mostrarDataGridPrestamos()
         mostrarPrestamos()
         bloquearModificar()
+        bloquearFactura()
         obtenerFecha()
         controlCmbEstado()
     End Sub
@@ -25,6 +26,7 @@ Public Class Retornos
         txtFechaRetorno.Text = fecha
     End Sub
     Private Sub insertarRetorno()
+        Try
         Dim cn As New conexion
         Dim idretorno, libroid, prestamoid As Integer
         Dim multa As Double
@@ -36,8 +38,7 @@ Public Class Retornos
         prestamoid = txtIdPrestamo.Text
         fechaRetorno = txtFechaRetorno.Text
         multa = txtMulta.Text
-        estadoMulta = asignarEstado()
-        Try
+            estadoMulta = asignarEstado()
             If cn.insertarRetornos(idretorno, alumnoid, libroid, prestamoid, fechaRetorno, multa, estadoMulta) Then
                 MessageBox.Show("Se guardó el registro de retorno", "Datos Ingresados", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
@@ -48,13 +49,15 @@ Public Class Retornos
         End Try
     End Sub
     Private Sub buscarRetorno()
-        Dim cn As New conexion
-        Dim idretorno As Integer
-        idretorno = txtBuscar.Text
         Try
+            Dim cn As New conexion
+            Dim idretorno As Integer
+            idretorno = txtBuscar.Text
             If cn.buscarRetornos(idretorno) Then
                 MsgBox("Encontrado")
                 mostrarBusqueda()
+                activarModificar()
+                cmbEstadoMulta.Enabled = True
             Else
                 MsgBox("No se encontró ese registro")
             End If
@@ -62,11 +65,11 @@ Public Class Retornos
         End Try
     End Sub
     Private Sub mostrarBusqueda()
-        Dim cn As New conexion
-        Dim cmd As New SqlCommand("buscarRetorno", cn.conexion)
-        Dim da As New SqlDataAdapter(cmd)
-        Dim dt As New DataTable
         Try
+            Dim cn As New conexion
+            Dim cmd As New SqlCommand("buscarRetorno", cn.conexion)
+            Dim da As New SqlDataAdapter(cmd)
+            Dim dt As New DataTable
             cn.conexion.Open()
             cmd.CommandType = CommandType.StoredProcedure
             cmd.Parameters.AddWithValue("@idretorno", txtBuscar.Text)
@@ -85,12 +88,12 @@ Public Class Retornos
         End Try
     End Sub
     Private Sub editarRetorno()
-        Dim cn As New conexion
-        Dim idretorno As Integer
-        Dim estadoMulta As String
-        idretorno = txtIdRetorno.Text
-        estadoMulta = cmbEstadoMulta.Text
         Try
+            Dim cn As New conexion
+            Dim idretorno As Integer
+            Dim estadoMulta As String
+            idretorno = txtIdRetorno.Text
+            estadoMulta = cmbEstadoMulta.Text
             If cn.editarRetorno(idretorno, estadoMulta) Then
                 MessageBox.Show("Se modificó el registro de retorno correctamente", "Datos Modificados", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
@@ -125,6 +128,36 @@ Public Class Retornos
             txtMulta.Text = multa
         End If
     End Sub
+    Private Sub insertarFactura()
+        Try
+        Dim cn As New conexion
+        Dim idretorno As Integer
+        Dim montoFactura As Double
+        Dim alumnoid As String
+        Dim fecha As Date
+        idretorno = txtIdRetorno.Text
+        alumnoid = txtIdAlumno.Text
+        fecha = txtFechaRetorno.Text
+            montoFactura = txtMulta.Text
+            If cn.insertarFactura(idretorno, alumnoid, montoFactura, fecha) Then
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+    Private Sub insertarFacturaEditar()
+        Try
+            Dim cn As New conexion
+            Dim idretorno As Integer
+            Dim fecha As Date
+            idretorno = txtIdRetorno.Text
+            fecha = txtFechaRetorno.Text
+            If cn.insertarFacturaEditar(idretorno, fecha) Then
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
     Private Function asignarEstado()
         Dim estado As String
         If (Val(txtMulta.Text) > 0) Then
@@ -148,6 +181,7 @@ Public Class Retornos
             Return False
         End If
     End Function
+
     Private Sub mostrarDataGridPrestamos()
         btnRetornos.Enabled = True
         btnPrestamos.Enabled = False
@@ -170,6 +204,12 @@ Public Class Retornos
     Private Sub bloquearModificar()
         btnEditar.Enabled = False
     End Sub
+    Private Sub activarFactura()
+        btnFactura.Enabled = True
+    End Sub
+    Private Sub bloquearFactura()
+        btnFactura.Enabled = False
+    End Sub
     Private Sub limpiar()
         txtIdRetorno.Clear()
         txtIdAlumno.Clear()
@@ -179,6 +219,7 @@ Public Class Retornos
         txtMulta.Clear()
         obtenerFecha()
         bloquearModificar()
+        bloquearFactura()
     End Sub
 
     Private Sub btnLimpiar_Click(sender As Object, e As EventArgs) Handles btnLimpiar.Click
@@ -195,7 +236,10 @@ Public Class Retornos
         If validarCampos() = True Then
             insertarRetorno()
             mostrarRetornos()
-            limpiar()
+            If cmbEstadoMulta.SelectedIndex = 0 Then
+                activarFactura()
+                insertarFactura()
+            End If
         Else
             MessageBox.Show("No se pudo guardar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
@@ -203,10 +247,16 @@ Public Class Retornos
 
     Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
         buscarRetorno()
-        activarModificar()
     End Sub
     Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
         editarRetorno()
+        If cmbEstadoMulta.SelectedIndex = 0 Then
+            activarFactura()
+            insertarFacturaEditar()
+        End If
+    End Sub
+    Private Sub btnFactura_Click(sender As Object, e As EventArgs) Handles btnFactura.Click
+        factura.Show()
     End Sub
     Private Sub txtIdRetorno_MouseHover(sender As Object, e As EventArgs) Handles txtIdRetorno.MouseHover
         toolTip.SetToolTip(txtIdRetorno, "Ingrese el ID de retorno")
@@ -281,6 +331,11 @@ Public Class Retornos
         toolTip.ToolTipTitle = "Retornos"
         toolTip.ToolTipIcon = ToolTipIcon.Info
     End Sub
+    Private Sub btnFactura_MouseHover(sender As Object, e As EventArgs) Handles btnFactura.MouseHover
+        toolTip.SetToolTip(btnFactura, "Muestra la Factura")
+        toolTip.ToolTipTitle = "Factura"
+        toolTip.ToolTipIcon = ToolTipIcon.Info
+    End Sub
     Private Sub txtIdRetorno_Validating(sender As Object, e As CancelEventArgs) Handles txtIdRetorno.Validating
         If DirectCast(sender, TextBox).Text.Length > 0 And IsNumeric(txtIdRetorno.Text) Then
             Me.errorValidacion.SetError(sender, "")
@@ -292,35 +347,35 @@ Public Class Retornos
         If DirectCast(sender, TextBox).Text.Length > 0 Then
             Me.errorValidacion.SetError(sender, "")
         Else
-            Me.errorValidacion.SetError(sender, "No pueden dejar campos vacíos")
+            Me.errorValidacion.SetError(sender, "No se pueden dejar campos vacíos")
         End If
     End Sub
     Private Sub txtIdLibro_Validating(sender As Object, e As CancelEventArgs) Handles txtIdLibro.Validating
         If DirectCast(sender, TextBox).Text.Length > 0 Then
             Me.errorValidacion.SetError(sender, "")
         Else
-            Me.errorValidacion.SetError(sender, "No pueden dejar campos vacíos")
+            Me.errorValidacion.SetError(sender, "No se pueden dejar campos vacíos")
         End If
     End Sub
     Private Sub txtIdPrestamo_Validating(sender As Object, e As CancelEventArgs) Handles txtIdPrestamo.Validating
         If DirectCast(sender, TextBox).Text.Length > 0 Then
             Me.errorValidacion.SetError(sender, "")
         Else
-            Me.errorValidacion.SetError(sender, "No pueden dejar campos vacíos")
+            Me.errorValidacion.SetError(sender, "No se pueden dejar campos vacíos")
         End If
     End Sub
     Private Sub txtFechaRetorno_Validating(sender As Object, e As CancelEventArgs) Handles txtFechaRetorno.Validating
         If DirectCast(sender, TextBox).Text.Length > 0 Then
             Me.errorValidacion.SetError(sender, "")
         Else
-            Me.errorValidacion.SetError(sender, "No pueden dejar campos vacíos")
+            Me.errorValidacion.SetError(sender, "No se pueden dejar campos vacíos")
         End If
     End Sub
     Private Sub txtMulta_Validating(sender As Object, e As CancelEventArgs) Handles txtMulta.Validating
         If DirectCast(sender, TextBox).Text.Length > 0 Then
             Me.errorValidacion.SetError(sender, "")
         Else
-            Me.errorValidacion.SetError(sender, "No pueden dejar campos vacíos")
+            Me.errorValidacion.SetError(sender, "No se pueden dejar campos vacíos")
         End If
     End Sub
     Private Sub txtBuscar_Validating(sender As Object, e As CancelEventArgs) Handles txtBuscar.Validating
