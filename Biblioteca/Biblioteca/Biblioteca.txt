@@ -1,0 +1,213 @@
+create database Biblioteca
+go
+
+use Biblioteca
+go 
+
+create schema proyecto
+go
+
+-------------- Genero libros ----------------
+-- drop table proyecto.genero
+create table proyecto.genero(
+	idGenero int primary key identity not null,
+	nombre varchar(30) not null
+)
+-------------- Estado libros ---------------------
+-- drop table proyecto.EstadoLibro
+create table proyecto.EstadoLibro(
+	idEstado int primary key identity not null,
+	estado varchar(30) not null
+)
+
+-------------- Estado alumnos ---------------------
+-- drop table proyecto.EstadoAlumnos
+create table proyecto.EstadoAlumnos(
+	id int primary key identity not null,
+	estado varchar(30) not null
+)
+-------------- facultad ------------------------
+ -- drop table proyecto.Facultad
+create table proyecto.Facultad(
+	idFacultad int primary key identity not null,
+	nombreFacultad varchar(50) not null
+)
+
+-------------- Usuarios -----------
+
+create table proyecto.Usuarios(
+	id int primary key not null,
+	UserName varchar(30) not null,
+	contrasena varchar(20) not null
+)
+
+----------------- libros ---------
+--  drop table proyecto.libros
+create table proyecto.libros(
+	idLibro int primary key not null,
+	nombre varchar(40) not null,
+	autor varchar(30) not null,
+	editorial varchar(40) not null,
+	generoId int foreign key references proyecto.genero(idGenero),
+	publicacion int not null,
+	pais varchar(30),
+	idioma varchar(30),
+	estadoId int foreign key references proyecto.EstadoLibro(idEstado)
+)
+
+-------- Registro alumnos --------------------
+-- drop table proyecto.Alumno
+create table proyecto.Alumno(
+	idAlumno varchar(15) primary key not null,
+	nombre varchar(25) not null,
+	apellido varchar(25) not null,
+	edad int not null,
+	facultadid int foreign key references proyecto.Facultad(idFacultad),
+	estadoid int foreign key references proyecto.EstadoAlumnos(id),
+	multa int
+)
+
+----------- Prestamos -----------------------
+-- drop table proyecto.Prestamo
+create table proyecto.Prestamo(
+	idPrestamo int primary key not null,
+	alumnoid varchar(15) foreign key references proyecto.Alumno(idAlumno),
+	libroid int foreign key references proyecto.libros(idLibro),
+	fechaPrestamo date not null,
+	fechaVencimiento date not null,
+)
+
+------------ Retornos ----------------------------
+--  drop table proyecto.Retornos
+create table proyecto.Retornos(
+	idretorno int primary key not null,
+	alumnoid varchar(15) foreign key references proyecto.Alumno(idAlumno),
+	libroid int foreign key references proyecto.libros(idLibro),
+	prestamoid int foreign key references proyecto.Prestamo(idPrestamo),
+	fechaRetorno date not null,
+)
+
+------------- Facturas -------------------------
+create table proyecto.Facturas(
+idFactura int identity primary key not null,
+idretorno int foreign key references proyecto.Retornos(idretorno),
+alumnoid varchar(15) foreign key references proyecto.Alumno(idAlumno),
+montoFactura float not null,
+fecha date not null
+)
+
+alter table proyecto.Retornos add multa float, estadoMulta varchar(45) 
+alter table proyecto.Facturas add descripcion varchar(45)
+
+
+-----insertar libro-----
+insert into proyecto.libros (idLibro, nombre, autor, editorial, generoId, publicacion, pais, idioma, estadoId) values 
+(1,'Hamlet','Shakespeare','Shakespeare',3,1603,'Inglaterra','Español',1)
+
+----- inserciones estado libro ------
+insert into proyecto.EstadoLibro (estado) values ('Retornado'),('No Retornado'),('Extraviado'),('Libre'),('Ocupado'),('Dañado')
+select * from proyecto.EstadoLibro
+
+----- inserciones estado Alumno ------
+insert into proyecto.EstadoAlumnos (estado) values ('Disponible'),('Denegado')
+select * from proyecto.EstadoAlumnos
+
+----- inserciones  Facultad------
+insert into proyecto.Facultad (nombreFacultad) values ('Ing. Ciencias de la Computacion'),('Ing. Industrial'),('Ing. Civil'),('Medicina'),('Odontologia'),('Enfermeria')
+select * from proyecto.Facultad
+
+----- inserciones en Genero ------
+insert into proyecto.genero (nombre) values ('Ciencia Ficcion'),('Aventuras'),('Terror y Misterio'),
+('Romance'),('Educativo'),('Poesia'),('Leyenda y Novela')
+select * from proyecto.genero
+
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (1,'0318-2004-02610',1,'2020-07-11','2020-07-25')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (2,'0318-2004-02610',1,'2020-07-11','2020-07-25')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (3,'0318-2004-02610',1,'2020-07-11','2020-07-29')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (4,'0318-2004-02610',1,'2020-07-11','2020-07-29')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (5,'0318-2004-02610',1,'2020-07-11','2020-07-30')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (6,'0318-2004-02610',1,'2020-07-11','2020-07-30')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (7,'0318-2004-02610',1,'2020-07-11','2020-07-30')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (8,'0318-2004-02610',1,'2020-07-11','2020-07-30')
+insert into proyecto.Prestamo (idPrestamo, alumnoid, libroid, fechaPrestamo, fechaVencimiento) values (9,'0318-2004-02610',1,'2020-07-11','2020-07-30')
+
+insert into proyecto.Alumno (idAlumno,nombre, apellido, edad, facultadid, estadoid, multa) values ('0318-2004-02610','Sandra','Calderon',19,1,1,' ')
+select * from proyecto.Alumno
+
+---- muestra la identidad, nombreCompleto, edad, facultad, estado del alumno ----------------------------------------
+select alu.idAlumno as Identidad, concat(nombre, ' ', apellido) as NombreCompleto,alu.edad, fa.nombreFacultad as Facultad, es.estado from proyecto.Alumno as alu
+inner join proyecto.Facultad as fa on fa.idFacultad=alu.facultadid
+inner join proyecto.EstadoAlumnos as es on es.id=alu.estadoid
+
+--Procedimiento para mostrar la tabla de Préstamos--
+alter procedure mostrarPrestamos
+as begin
+select idPrestamo as 'ID Préstamo', alumnoid as 'ID Alumno', concat(a.nombre,' ',a.apellido) as 'Nombre Alumno', 
+libroid as 'ID Libro', l.nombre as 'Nombre Libro', fechaPrestamo as 'Fecha Préstamo', fechaVencimiento as 'Fecha de Vencimiento' 
+from proyecto.Prestamo as p inner join proyecto.Alumno as a on a.idAlumno = p.alumnoid inner join proyecto.libros as l on
+l.idLibro = p.libroid
+end
+
+--Procedimiento para mostrar la tabla de Retornos--
+alter procedure mostrarRetornos
+as begin
+select idretorno as 'ID Retorno', alumnoid as 'ID Alumno', concat(a.nombre, ' ', a.apellido) as 'Nombre Alumno', libroid as 'ID Libro',
+l.nombre as 'Nombre Libro', prestamoid as 'ID Préstamo', fechaRetorno as 'Fecha Retorno', r.multa as 'Multa', estadoMulta as 'Estado Multa'
+from proyecto.Retornos as r inner join proyecto.Alumno as a on a.idAlumno = r.alumnoid inner join proyecto.libros as l on l.idLibro = r.libroid
+end
+
+--Procedimiento para insertar un retorno--
+alter procedure insertarRetorno 
+@idretorno int, @alumnoid varchar(15), @libroid int, @prestamoid int, @fechaRetorno date, @multa float, @estadoMulta varchar(45)
+as begin
+if exists (select idretorno, prestamoid from proyecto.Retornos where idretorno = @idretorno or prestamoid = @prestamoid)
+		raiserror ('ID retorno o ID Préstamo ya existe. Ingrese un ID diferente',16,1)
+		else
+insert into proyecto.Retornos values (@idretorno, @alumnoid, @libroid, @prestamoid, @fechaRetorno, @multa, @estadoMulta)
+update proyecto.libros set estadoId = 1 where idLibro = @libroid
+if (@multa > 0 and @estadoMulta = 'No Pagado')
+update proyecto.Alumno set estadoid = 2, multa = @multa
+else if (@multa = 0 or @estadoMulta = 'Pagado')
+update proyecto.Alumno set estadoid = 1, multa = 0
+end
+
+--Procedimiento para buscar un retorno--
+alter procedure buscarRetorno 
+@idretorno int
+as begin
+select idretorno as 'ID Retorno', alumnoid as 'ID Alumno', concat(a.nombre, ' ', a.apellido) as 'Nombre Alumno', libroid as 'ID Libro', 
+l.nombre as 'Nombre Libro', prestamoid as 'ID Préstamo', fechaRetorno as 'Fecha de Retorno', r.multa as 'Multa', estadoMulta as 'Estado Multa' 
+from proyecto.Retornos as r inner join proyecto.Alumno as a on a.idAlumno = r.alumnoid inner join proyecto.libros as l on l.idLibro = r.libroid
+where idretorno like @idretorno
+end
+
+--Procedimiento para editar un retorno--
+alter procedure editarRetorno
+@idretorno int, @estadoMulta varchar(45) 
+as begin
+if exists (select idretorno, estadoMulta from proyecto.Retornos where estadoMulta = 'Pagado' and idretorno = @idretorno)
+raiserror ('La multa ya fue pagada',16,1)
+else
+update proyecto.Retornos set estadoMulta = @estadoMulta where idretorno = @idretorno
+update proyecto.Alumno set multa = 0
+end
+
+--Procedimiento para insertar una factura --
+alter procedure insertarFactura
+@idretorno int, @alumnoid varchar(15), @montoFactura float, @fecha date
+as begin
+insert into proyecto.Facturas values (@idretorno, @alumnoid, @montoFactura, @fecha, 'Pago de Multa')
+end 
+
+-- Procedimiento para almacenar una factura desde el botón editar --
+alter procedure insertarFacturaEditar
+@idretorno int, @fecha date
+as begin
+if exists (select idretorno from proyecto.Facturas as f where f.idretorno = @idretorno)
+raiserror ('Factura ya existente',16,1)
+else
+declare @alumnoid varchar(15), @montoFactura float
+select @alumnoid = r.alumnoid from proyecto.Retornos as r where r.idretorno = @idretorno
+select @montoFactura = r.multa from proyecto.Retornos as r where r.idretorno = @idretorno
+insert into proyecto.Facturas values (@idretorno, @alumnoid, @montoFactura, @fecha, 'Pago de Multa')
+end
